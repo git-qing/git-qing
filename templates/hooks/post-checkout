@@ -1,0 +1,8 @@
+#!/bin/bash                                                                      
+
+attr=$PWD/.gitattributes
+if [[ -e $attr ]] && $(grep 'qing.largefiles' $attr 1>/dev/null 2>&1) && [ ! -d $PWD/.qing ]; then
+  echo -e "\n** git-qing is needed for $PWD"
+  git qing install 
+  echo -e "run 'git qing download' to download/link qing files if this is a fresh clone\n" 
+fi  

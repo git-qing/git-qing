@@ -1,0 +1,91 @@
+#!/bin/bash
+# Guoqing.Ge 20210418
+#
+
+#get the basedir of the git-qing package
+basedir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+
+#show git-qing usage if no options provided
+if [[ "$@" == "" ]]; then
+  git qing help
+fi
+
+
+#parse the command line, exec different shell scripts based on the first parameter
+for i in "$@"; do case $i in
+  install)
+    shift
+    exec $basedir/sh/install.sh "$@"
+    ;;
+  uninstall)
+    shift
+    exec $basedir/sh/uninstall.sh "$@"
+    ;;
+  --modifyBeforeStaging)
+    shift
+    exec $basedir/sh/filter.sh "$@"
+    ;;
+  --preCommit)
+    shift
+    exec $basedir/sh/preCommit.sh "$@"
+    ;;
+  hello)
+    shift
+    exec $basedir/sh/hello.sh "$@"
+    ;;
+  version)
+    cat $basedir/VERSION
+    ;;
+  status)
+    shift
+    exec $basedir/sh/status.sh "$@"
+    ;;
+  help)
+    shift
+    exec $basedir/sh/help.sh "$@"
+    ;;
+  withdraw|unlock)
+    shift
+    exec $basedir/sh/withdraw.sh "$@"
+    ;;
+  deposit|lock)
+    shift
+    exec $basedir/sh/deposit.sh "$@"
+    ;;
+  gethash)
+    shift
+    exec $basedir/sh/gethash.sh "$@"
+    ;;
+  compareDirs)
+    shift
+    exec $basedir/sh/compareDirs.sh "$@"
+    ;;
+  allhandscheck|allHandsCheck)
+    shift
+    exec $basedir/sh/allHandsCheck.sh "$@"
+    ;;
+  upload)
+    shift
+    exec $basedir/sh/upload.sh "$@"
+    ;;
+  download)
+    shift
+    exec $basedir/sh/download.sh "$@"
+    ;;
+  repair)
+    shift
+    exec $basedir/sh/repair.sh "$@"
+    ;;
+  verify|fsck)
+    shift
+    exec $basedir/sh/verifyFiles.sh "$@"
+    ;;
+  -l=*|--lib=*)
+    LIBPATH="${i#*=}"
+    shift
+    ;;
+  *)
+    echo "unknow git-qing option: $@"
+    exit
+    ;;
+esac; done

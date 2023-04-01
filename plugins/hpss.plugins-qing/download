@@ -1,0 +1,54 @@
+#!/bin/bash
+# connect local qing space to current MIRROR (using links)
+# 
+basedir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+workTreeTop=$( git rev-parse --show-toplevel 2>/dev/null )
+source $basedir/mirror.sh #set up the correct MIRROR variable for differnt platforms
+
+dstdir=$1
+list=$workTreeTop/.git/tmp.downlist
+hpssx=$workTreeTop/.git/tmp_pull_from_hpss
+mkdir -p $dstdir
+echo "connect local qing space to MIRROR-$MIRROR ..."
+find "$MIRROR" -type f -print0 | while IFS= read -r -d '' line
+do
+  fhash=${line##*/}
+  subdir=${fhash:0:2}
+  dstfile=$dstdir/$subdir/$fhash
+  mkdir -p $dstdir/$subdir
+  ln -snf $line $dstfile
+done
+echo 'Done'
+
+#check if we need to download some qing files from a remote service
+git qing allHandsCheck | grep -v "inaccessible qing files" 1>$list
+sort $list | uniq > ${list}.2; mv ${list}.2 $list
+if [ -s $list ]; then # list not empty
+  echo -e "\nqing files missed in MIRROR, can be pulled from HPSS"
+  echo -e "It is recommended to do this under a group account to save disk space and team efforts by avoiding duplicates\n"
+
+  #generate $hpssx
+  echo -e "#!/bin/sh\nsource /etc/profile.d/modules.sh\nmodule load hpss\n\ncd $MIRROR" > $hpssx
+  echo "#cd $workTreeTop/.qing #if under user's own account, uncomment this and comment the line above" >>$hpssx
+
+  module load hpss
+  echo -e "check HPSS, wait for response ...\n(if waiting too long, HPSS may be down or has connection issues)" 
+  #get the lastest 10 snapshots
+  echo -e "\n<<tarball_candidates">>$hpssx
+  hsi ls -lh $HPSS_DIR 2>&1 | grep "tar$" |tail -n 10 >> $hpssx
+  latest=$(tail -n 1 $hpssx|cut -c63-)
+  echo -e "tarball_candidates\n">>$hpssx
+
+  echo "srcHPSS=$HPSS_DIR/$latest" >>$hpssx
+  while read line; do
+    echo "rm -f $line" >> $hpssx
+    echo "htar -xvf \$srcHPSS $line" >> $hpssx
+  done < $list
+  chmod a+x $hpssx
+  echo -e "\nsudo su - mygrp and run the following command under mygrp:\n\n    $hpssx"
+  echo -e "\nif to run under user's own account, uncomment line 6 in $hpssx"
+  echo -e "\nAfter pulling from HPSS, run 'git qing download' again to make sure 'allHandsCheck GOOD'\n"
+  exit 1
+else
+  echo "allHandsCheck GOOD"
+fi

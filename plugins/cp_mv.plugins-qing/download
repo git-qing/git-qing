@@ -1,0 +1,22 @@
+#!/bin/bash
+# connect local qing space to current MIRROR (using links)
+# 
+basedir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+workTreeTop=$( git rev-parse --show-toplevel 2>/dev/null )
+source $basedir/mirror.sh #set up the correct MIRROR variable for differnt platforms
+
+dstdir=$1
+list=$workTreeTop/.git/tmp.downlist
+mkdir -p $dstdir
+echo "connect local qing space to MIRROR-$MIRROR ..."
+find "$MIRROR" -type f -print0 | while IFS= read -r -d '' line
+do
+  fhash=${line##*/}
+  subdir=${fhash:0:2}
+  dstfile=$dstdir/$subdir/$fhash
+  mkdir -p $dstdir/$subdir
+  ln -snf $line $dstfile
+done
+echo 'Done'
+
+echo "run 'git qing allHandsCheck' to make sure all are good"
