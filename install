@@ -2,7 +2,7 @@
 
 DEST="$HOME/local"
 
-echo "install the git-qing software under $DEST"
+echo "install the git-mega software under $DEST"
 
 if [ ! -d $DEST ]; then
   echo "$DEST does not exist, create one (Y/N)?"
@@ -14,27 +14,26 @@ if [ ! -d $DEST ]; then
   fi
 fi
 
-mkdir -p $DEST/git-qing
+mkdir -p $DEST/git-mega
 #get the basedir of the install script
 basedir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
-chmod +w $DEST/git-qing/git-qing 2>/dev/null
-chmod +w $DEST/git-qing/sh/* 2>/dev/null
-cp -rp $basedir/git-qing $DEST/git-qing
-cp -rp $basedir/sh $DEST/git-qing
-cp -rp $basedir/LICENSE $DEST/git-qing
-cp -rp $basedir/README.md $DEST/git-qing
-cp -rp $basedir/VERSION $DEST/git-qing
-cp -rp $basedir/plugins $DEST/git-qing
-cp -rp $basedir/templates $DEST/git-qing
-chmod -w $DEST/git-qing/git-qing
-chmod -w $DEST/git-qing/sh/*
+chmod +w $DEST/git-mega/git-mega 2>/dev/null
+chmod +w $DEST/git-mega/sh/* 2>/dev/null
+cp -rp $basedir/git-mega $DEST/git-mega
+cp -rp $basedir/sh $DEST/git-mega
+cp -rp $basedir/LICENSE $DEST/git-mega
+cp -rp $basedir/README.md $DEST/git-mega
+cp -rp $basedir/VERSION $DEST/git-mega
+cp -rp $basedir/plugins $DEST/git-mega
+chmod -w $DEST/git-mega/git-mega
+chmod -w $DEST/git-mega/sh/*
 
 echo "\
 Done!
 
-Please add git-qing into the search path
+Please add git-mega into the search path
 Examples:
 For bash or similar, add the following line into .bashrc or a similar file
-   export PATH=\$PATH:$DEST/git-qing
+   export PATH=\$PATH:$DEST/git-mega
 For csh or similar, add the following line into .cshrc or a similar file
-   setenv PATH \$PATH:$DEST/git-qing"
+   setenv PATH \$PATH:$DEST/git-mega"

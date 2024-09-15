@@ -1,5 +1,5 @@
 #!/bin/bash
-# upload local qing files to a mirror if needed and save a snapshot to HPSS
+# upload local mega files to a mirror if needed and save a snapshot to HPSS
 #
 basedir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 workTreeTop=$( git rev-parse --show-toplevel 2>/dev/null )
@@ -7,23 +7,23 @@ source $basedir/mirror.sh #set up the correct MIRROR variable for differnt platf
 
 srcdir=$1
 list=$workTreeTop/.git/tmp.uploadlist
-cpexe=$workTreeTop/.git/tmp_copy_qing_files
+cpexe=$workTreeTop/.git/tmp_copy_mega_files
 hpssx=$workTreeTop/.git/tmp_save_to_hpss
-echo "comparing local qing space with MIRROR-$MIRROR ..."
+echo "comparing local mega space with MIRROR-$MIRROR ..."
 mkdir -p $MIRROR # if dstdir not existed, create one to avoid trivial errors
-git qing compareDirs $srcdir $MIRROR | grep -v "not found" 1>$list
+git mega compareDirs $srcdir $MIRROR | grep -v "not found" 1>$list
 if [ -s $list ]; then # list not empty
-  echo "$workTreeTop/.plugins-qing/copyqingfiles.sh $list $workTreeTop/.qing $MIRROR" > $cpexe
+  echo "$workTreeTop/.plugins-mega/copymegafiles.sh $list $workTreeTop/.mega $MIRROR" > $cpexe
   chmod a+x $cpexe
   echo -e "\nfiles to be uploaded:"
   cat $list
   echo -e "-------------------------------------------------------------------------"
   echo -e "\nsudo su - mygrp\nand then run the following command under mygrp"
   echo "   $cpexe"
-  echo -e  "\nafter that, back to the user account, run 'git qing upload' again to make sure no more qing files need to be uploaded"
+  echo -e  "\nafter that, back to the user account, run 'git mega upload' again to make sure no more mega files need to be uploaded"
   exit
 else
-  echo "no more REGULAR qing files needs to be uploaded"
+  echo "no more REGULAR mega files needs to be uploaded"
 fi
 
 # save to HPSS

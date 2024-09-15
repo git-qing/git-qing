@@ -1,5 +1,5 @@
 #!/bin/bash
-# connect local qing space to current MIRROR (using links)
+# connect local mega space to current MIRROR (using links)
 # 
 basedir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 workTreeTop=$( git rev-parse --show-toplevel 2>/dev/null )
@@ -8,7 +8,7 @@ source $basedir/mirror.sh #set up the correct MIRROR variable for differnt platf
 dstdir=$1
 list=$workTreeTop/.git/tmp.downlist
 mkdir -p $dstdir
-echo "connect local qing space to MIRROR-$MIRROR ..."
+echo "connect local mega space to MIRROR-$MIRROR ..."
 find "$MIRROR" -type f -print0 | while IFS= read -r -d '' line
 do
   fhash=${line##*/}
@@ -19,4 +19,4 @@ do
 done
 echo 'Done'
 
-echo "run 'git qing allHandsCheck' to make sure all are good"
+echo "run 'git mega allHandsCheck' to make sure all are good"

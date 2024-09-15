@@ -3,14 +3,14 @@
 basedir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 source $basedir/libfuncs.sh
 SetDirs
-exit_if_not_qing
+exit_if_not_mega
 
 mypath="$1"
 
 dealOneFile()
 {
   local myfile="$1"
-  if $(is_link_to_qing_space "$myfile"); then
+  if $(is_link_to_mega_space "$myfile"); then
     mylink=$(readlink "$myfile")
     myhash=${mylink##*/}
     subdir=${myhash:0:2}
@@ -30,14 +30,14 @@ dealOneFile()
 
 
 if [[ -L "$mypath"  ]]; then
-  if [[ ! "$mypath" == *".git/"* ]] && [[ ! "$mypath" == *".qing/"* ]]; then
+  if [[ ! "$mypath" == *".git/"* ]] && [[ ! "$mypath" == *".mega/"* ]]; then
     dealOneFile "$mypath"
   fi
 elif [[ -d "$mypath" ]]; then
-  echo "git-qing:searching for broken links ...."
+  echo "git-mega:searching for broken links ...."
   find "$mypath" -type l -print0 | while IFS= read -r -d '' myfile
   do
-    if [[ ! "$myfile" == *".git/"* ]] && [[ ! "$myfile" == *".qing/"* ]]; then
+    if [[ ! "$myfile" == *".git/"* ]] && [[ ! "$myfile" == *".mega/"* ]]; then
       dealOneFile "$myfile"
     fi
   done
@@ -46,4 +46,4 @@ else
   echo "'$mypath' not found"
 fi
 
-echo -e "\nrun 'git qing download' and then 'git qing repair <dir>' if any repairs failed"
+echo -e "\nrun 'git mega download' and then 'git mega repair <dir>' if any repairs failed"

@@ -1,5 +1,5 @@
 #!/bin/bash
-# connect local qing space to current MIRROR (using links)
+# connect local mega space to current MIRROR (using links)
 # 
 basedir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 workTreeTop=$( git rev-parse --show-toplevel 2>/dev/null )
@@ -9,7 +9,7 @@ dstdir=$1
 list=$workTreeTop/.git/tmp.downlist
 hpssx=$workTreeTop/.git/tmp_pull_from_hpss
 mkdir -p $dstdir
-echo "connect local qing space to MIRROR-$MIRROR ..."
+echo "connect local mega space to MIRROR-$MIRROR ..."
 find "$MIRROR" -type f -print0 | while IFS= read -r -d '' line
 do
   fhash=${line##*/}
@@ -20,16 +20,16 @@ do
 done
 echo 'Done'
 
-#check if we need to download some qing files from a remote service
-git qing allHandsCheck | grep -v "inaccessible qing files" 1>$list
+#check if we need to download some mega files from a remote service
+git mega allHandsCheck | grep -v "inaccessible mega files" 1>$list
 sort $list | uniq > ${list}.2; mv ${list}.2 $list
 if [ -s $list ]; then # list not empty
-  echo -e "\nqing files missed in MIRROR, can be pulled from HPSS"
+  echo -e "\nmega files missed in MIRROR, can be pulled from HPSS"
   echo -e "It is recommended to do this under a group account to save disk space and team efforts by avoiding duplicates\n"
 
   #generate $hpssx
   echo -e "#!/bin/sh\nsource /etc/profile.d/modules.sh\nmodule load hpss\n\ncd $MIRROR" > $hpssx
-  echo "#cd $workTreeTop/.qing #if under user's own account, uncomment this and comment the line above" >>$hpssx
+  echo "#cd $workTreeTop/.mega #if under user's own account, uncomment this and comment the line above" >>$hpssx
 
   module load hpss
   echo -e "check HPSS, wait for response ...\n(if waiting too long, HPSS may be down or has connection issues)" 
@@ -47,7 +47,7 @@ if [ -s $list ]; then # list not empty
   chmod a+x $hpssx
   echo -e "\nsudo su - mygrp and run the following command under mygrp:\n\n    $hpssx"
   echo -e "\nif to run under user's own account, uncomment line 6 in $hpssx"
-  echo -e "\nAfter pulling from HPSS, run 'git qing download' again to make sure 'allHandsCheck GOOD'\n"
+  echo -e "\nAfter pulling from HPSS, run 'git mega download' again to make sure 'allHandsCheck GOOD'\n"
   exit 1
 else
   echo "allHandsCheck GOOD"

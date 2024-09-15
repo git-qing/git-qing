@@ -2,12 +2,12 @@
 # Guoqing.Ge 20210418
 #
 
-#get the basedir of the git-qing package
+#get the basedir of the git-mega package
 basedir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
-#show git-qing usage if no options provided
+#show git-mega usage if no options provided
 if [[ "$@" == "" ]]; then
-  git qing help
+  git mega help
 fi
 
 
@@ -85,7 +85,7 @@ for i in "$@"; do case $i in
     shift
     ;;
   *)
-    echo "unknow git-qing option: $@"
+    echo "unknow git-mega option: $@"
     exit
     ;;
 esac; done

@@ -9,8 +9,8 @@ if [[ -z "$mydir" ]] ; then
   if [[ -d "$qroot" ]]; then
     mydir="$qroot"
   else
-    echo "run 'git qing verify' under a git-qing repo"
-    echo "or 'git qing verify <dir|file> if not a git-qing repo"
+    echo "run 'git mega verify' under a git-mega repo"
+    echo "or 'git mega verify <dir|file> if not a git-mega repo"
     exit
   fi
 fi
@@ -18,8 +18,8 @@ if [[ -f "$mydir" ]]; then
   ${basedir}/verifyOneFile.sh $mydir
 elif [[ ! -d "$mydir" ]]; then
   echo "'$mydir' not found!"
-  echo "run 'git qing verify' under a git-qing repo"
-  echo "or 'git qing verify <dir|file> if not a git-qing repo"
+  echo "run 'git mega verify' under a git-mega repo"
+  echo "or 'git mega verify <dir|file> if not a git-mega repo"
 else
   find "$mydir" -type f -print0 | while IFS= read -r -d '' myfile
   do

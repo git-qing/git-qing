@@ -3,7 +3,7 @@
 basedir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 source $basedir/libfuncs.sh
 SetDirs
-exit_if_not_qing
+exit_if_not_mega
 #
 chmod_w_dirs
 mkdir -p "$tmpdir"
@@ -21,7 +21,7 @@ while read line; do  # <$tmpdir/files.changed
   if [ ! -z "$line" ]; then
     myfile=$(echo "${line}" |xargs)  #trim leading whitespaces
     if [ -d $myfile ]; then continue; fi #skip to next line if it is a directory
-    if $(deposit_if_qing_file "$myfile"); then
+    if $(deposit_if_mega_file "$myfile"); then
       git add "$myfile"  #now $myfile is a link, stage the typechange
     fi
   fi

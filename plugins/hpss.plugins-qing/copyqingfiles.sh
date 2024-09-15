@@ -1,5 +1,5 @@
 #!/bin/bash
-# copy qing files
+# copy mega files
 #
 if [ $# -lt 3 ]; then
   echo "not enough paramaters"
@@ -22,7 +22,7 @@ while read line; do
   subdir=${fhash:0:2}
   dstfile=$dstdir/$subdir/$fhash
   if [ -e $dstfile ]; then #dstfile corrupted, otherwise it will not be in the list
-    myhash=$(git qing gethash $dstfile)
+    myhash=$(git mega gethash $dstfile)
     if [ "$myhash" != "$fhash" ]; then #confirm dstfile corrupted
       chmod +w $dstfile
       rm -rf $dstfile

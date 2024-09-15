@@ -10,4 +10,4 @@ if [ ! -f "$myfile" ]; then
   exit 1
 fi
 
-${QING_SHA_CMD} $myfile | cut -d ' ' -f1
+${MEGA_SHA_CMD} $myfile | cut -d ' ' -f1

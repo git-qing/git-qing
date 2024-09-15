@@ -1,5 +1,5 @@
 #!/bin/bash
-#  find those qing files in srcdir but not in dstdir
+#  find those mega files in srcdir but not in dstdir
 basedir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 source $basedir/libfuncs.sh
 
@@ -17,8 +17,8 @@ do
     filesize=$(du -b "$dstfile" 2>/dev/null|cut -f1 2>/dev/null)
     if [ -z $filesize ]; then filesize=0; fi
     sizestring=$(echo "$filesize" | numfmt --to=iec 2>/dev/null)
-    echo "git-qing:process the next file, ${sizestring}" >&2 #to avoid output to stdin
-    myhash=$(git qing gethash $dstfile)
+    echo "git-mega:process the next file, ${sizestring}" >&2 #to avoid output to stdin
+    myhash=$(git mega gethash $dstfile)
     if [ ! "$myhash" == "$fhash" ]; then #dstfile corrupted
        echo ${srcfile}
     fi

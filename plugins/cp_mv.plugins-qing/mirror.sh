@@ -1,5 +1,5 @@
 #!/bin/bash
-# git-qing mirrors at different HPC platforms
+# git-mega mirrors at different HPC platforms
 #
 if [[ -d /A/PATH/AT/PLATFORM1 ]] ; then
     PLATFORM=platfrom1

@@ -4,9 +4,9 @@ basedir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 source $basedir/libfuncs.sh
 SetDirs #mainTreeTop, workTreeTop, tmpdir, qroot
 
-if $(is_qing_installed); then
-  echo "Hello, git-qing is installed"
+if $(is_mega_installed); then
+  echo "Hello, git-mega is installed"
 else
-  echo "Hello, git-qing is NOT installed, run 'git qing install' to install"
+  echo "Hello, git-mega is NOT installed, run 'git mega install' to install"
 fi
 chmod_w_dirs

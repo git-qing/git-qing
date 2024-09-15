@@ -1,5 +1,5 @@
 #!/bin/bash
-# git-qing mirrors at different HPC platforms
+# git-mega mirrors at different HPC platforms
 #
 HPSS_DIR="/PATH/TO/HPSS/DIR"
 

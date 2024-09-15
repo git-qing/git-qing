@@ -1,5 +1,5 @@
 #!/bin/bash
-# copy or move qing files
+# copy or move mega files
 #
 if [ $# -lt 3 ]; then
   echo "not enough paramaters"
@@ -23,7 +23,7 @@ while read line; do
   subdir=${fhash:0:2}
   dstfile=$dstdir/$subdir/$fhash
   if [ -e $dstfile ]; then #dstfile corrupted, otherwise it will not be in the list
-    myhash=$(git qing gethash $dstfile)
+    myhash=$(git mega gethash $dstfile)
     if [ "$myhash" != "$fhash" ]; then #confirm dstfile corrupted
       chmod +w $dstfile
       rm -rf $dstfile
@@ -42,9 +42,9 @@ done < $list
 echo "$copy_or_move Done"
 
 if [[ "$copy_or_move" == "move" ]]; then
-  echo "all local qing files were moved into MIRROR:$MIRROR"
-  echo "run 'git qing download' to connect local qing space with the MIRROR"
-  git qing download
+  echo "all local mega files were moved into MIRROR:$MIRROR"
+  echo "run 'git mega download' to connect local mega space with the MIRROR"
+  git mega download
 fi
 
 exit 0
